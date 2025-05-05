@@ -16,7 +16,8 @@ enum LID_TYPE
   AVIA = 1,
   VELO16,
   OUST64,
-  MID360
+  MID360,
+  OPSYS
 };  //{1, 2, 3}
 enum TIME_UNIT
 {
@@ -132,6 +133,23 @@ POINT_CLOUD_REGISTER_POINT_STRUCT(livox_ros::LivoxPointXyzrtl,
     (uint8_t, line, line)
 )
 
+namespace opsys_ros
+{
+typedef struct{
+  float x;            /**< X axis, Unit:m */
+  float y;            /**< Y axis, Unit:m */
+  float z;            /**< Z axis, Unit:m */
+  float intensity; /**< intensity   */
+
+} Point;
+}
+POINT_CLOUD_REGISTER_POINT_STRUCT(opsys_ros::Point,
+    (float, x, x)
+    (float, y, y)
+    (float, z, z)
+    (float, intensity, intensity)
+)
+
 class Preprocess
 {
   public:
@@ -159,6 +177,7 @@ private:
   void oust64_handler(const sensor_msgs::msg::PointCloud2::UniquePtr &msg);
   void velodyne_handler(const sensor_msgs::msg::PointCloud2::UniquePtr &msg);
   void mid360_handler(const sensor_msgs::msg::PointCloud2::UniquePtr &msg);
+  void opsys_handler(const sensor_msgs::msg::PointCloud2::UniquePtr &msg);
   void default_handler(const sensor_msgs::msg::PointCloud2::UniquePtr &msg);
   void give_feature(PointCloudXYZI &pl, vector<orgtype> &types);
   void pub_func(PointCloudXYZI &pl, const rclcpp::Time &ct);
